@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2014-2015 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2014-2018 Oracle and/or its affiliates. All rights reserved.
 #
 
 # If log.nm does not exists, container is starting for 1st time
@@ -15,7 +15,7 @@ fi
 
 # Start Node Manager
 echo "Starting NodeManager in background..."
-nohup startNodeManager.sh > log.nm 2>&1 &
+nohup /u01/oracle/user_projects/domains/base_domain/bin/startNodeManager.sh > log.nm 2>&1 &
 echo "NodeManager started."
 
 # Add this 'Machine' and 'ManagedServer' to the AdminServer only if 1st execution
