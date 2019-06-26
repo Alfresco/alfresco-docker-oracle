@@ -49,7 +49,7 @@ sid=###ORACLE_SID###
 # Default value : false
 # Mandatory     : No
 #-----------------------------------------------------------------------------
-createAsContainerDatabase=false
+createAsContainerDatabase=true
 
 #-----------------------------------------------------------------------------
 # Name          : numberOfPDBs
@@ -59,7 +59,7 @@ createAsContainerDatabase=false
 # Default value : 0
 # Mandatory     : No
 #-----------------------------------------------------------------------------
-numberOfPDBs=0
+numberOfPDBs=1
 
 #-----------------------------------------------------------------------------
 # Name          : pdbName 
@@ -170,7 +170,7 @@ nationalCharacterSet=AL16UTF16
 # Default value : None
 # Mandatory     : NO
 #-----------------------------------------------------------------------------
-initParams=db_recovery_file_dest=/opt/oracle/oradata/fast_recovery_area,audit_trail=none,audit_sys_operations=false
+initParams=audit_trail=none,audit_sys_operations=false
 
 #-----------------------------------------------------------------------------
 # Name          : listeners
@@ -201,4 +201,4 @@ automaticMemoryManagement=FALSE
 # Default value : 
 # Mandatory     : NO
 #-----------------------------------------------------------------------------
-totalMemory=1024
+totalMemory=2048

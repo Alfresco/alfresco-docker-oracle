@@ -28,7 +28,6 @@ FROM oraclelinux:7-slim
 MAINTAINER Gerald Venzl <gerald.venzl@oracle.com>
 
 # Environment variables required for this build (do NOT change)
-# and precreation of Alfresco DB
 # -------------------------------------------------------------
 ENV ORACLE_BASE=/opt/oracle \
     ORACLE_HOME=/opt/oracle/product/12.1.0.2/dbhome_1 \
@@ -45,14 +44,8 @@ ENV ORACLE_BASE=/opt/oracle \
     CHECK_SPACE_FILE="checkSpace.sh" \
     CHECK_DB_FILE="checkDBStatus.sh" \
     USER_SCRIPTS_FILE="runUserScripts.sh" \
-    INSTALL_DB_BINARIES_FILE="installDBBinaries.sh" \
-    ORACLE_SID="ORCL" \
-    ORACLE_PDB="PDB1" \
-    ORACLE_PWD="alfresco" \
-    ORACLE_CHARACTERSET="AL32UTF8" \
-    PRE_CREATE_PDB_FILE="preCreateDB.sh" \
-    CREATE_ALF_DB_FILE="create-db.sql"
-    
+    INSTALL_DB_BINARIES_FILE="installDBBinaries.sh"
+
 # Use second ENV so that variable get substituted
 ENV INSTALL_DIR=$ORACLE_BASE/install \
     PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch/:/usr/sbin:$PATH \
@@ -62,7 +55,7 @@ ENV INSTALL_DIR=$ORACLE_BASE/install \
 # Copy binaries
 # -------------
 COPY $INSTALL_FILE_1 $INSTALL_FILE_2 $INSTALL_RSP $PERL_INSTALL_FILE $SETUP_LINUX_FILE $CHECK_SPACE_FILE $INSTALL_DB_BINARIES_FILE $INSTALL_DIR/
-COPY $RUN_FILE $START_FILE $CREATE_DB_FILE $CONFIG_RSP $PWD_FILE $CHECK_DB_FILE $USER_SCRIPTS_FILE $PRE_CREATE_PDB_FILE $CREATE_ALF_DB_FILE $ORACLE_BASE/
+COPY $RUN_FILE $START_FILE $CREATE_DB_FILE $CONFIG_RSP $PWD_FILE $CHECK_DB_FILE $USER_SCRIPTS_FILE $ORACLE_BASE/
 
 RUN chmod ug+x $INSTALL_DIR/*.sh && \
     sync && \
@@ -81,15 +74,8 @@ RUN $ORACLE_BASE/oraInventory/orainstRoot.sh && \
 USER oracle
 WORKDIR /home/oracle
 
-# Volume disabled to store default Alfresco DB
-#VOLUME ["$ORACLE_BASE/oradata"]
+VOLUME ["$ORACLE_BASE/oradata"]
 EXPOSE 1521 5500
-
-# Pre create PDB
-RUN $ORACLE_BASE/$PRE_CREATE_PDB_FILE
-
-# Pre create Alfresco DB
-RUN sqlplus / as sysdba @$ORACLE_BASE/$CREATE_ALF_DB_FILE
-
+    
 # Define default command to start Oracle Database. 
 CMD exec $ORACLE_BASE/$RUN_FILE
